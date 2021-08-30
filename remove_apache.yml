@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: install apache2
+      apt: name=apache2 update_cache=yes state=latest
+    - name: Remove index.html after deploying
+      file:
+        path: "/var/www/html/index.html"
+        state: absent
+
+    - name: Remove apache2 from VM
+      tags: uninstall_apache
+      apt:
+        name: apache2
+        autoremove: yes
+        state: absent
